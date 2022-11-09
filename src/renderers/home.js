@@ -30,21 +30,41 @@ getAllRef.addEventListener("click", async () => {
     tableContainerRef.style.display = "table";
 });
 
+searchFormRef.addEventListener("submit", async (event) => {
+    event.preventDefault(); // Prevent the form from submitting
+    let productSku = document.getElementById("search-sku-input").value;
+    console.log(productSku);
+    const data = await backend.getProductBySku(productSku);
+    if (data.products === null) {
+        alert("Product not found");
+    }
+    if (data.products[0] === null) {
+        alert("Product not found");
+    } else {
+        searchFormRef.style.display = "none"; // Disable the search form
+        displayTable([{ "node": data.products[0] }]); // Create the table
+        tableContainerRef.style.display = "table";
+    }
+});
+
 lookupRef.addEventListener("click", async () => {
     disableRightPaneViews();
     searchFormRef.style.display = "block";
-    searchFormRef.addEventListener("submit", async (event) => {
+});
+
+
+updateItemRef.addEventListener("click", async () => {
+    disableRightPaneViews();
+    updateDisplayRef.style.display = "block";
+    updateDisplayRef.addEventListener("submit", async (event) => {
         event.preventDefault(); // Prevent the form from submitting
-        let productSku = document.getElementById("sku-input").value;
-        console.log(productSku);
-        const data = await backend.getProductBySku(productSku);
-        product = data.products[0];
-        if (data.products === null || data.products[0] === null) {
-            alert("Product not found");
+        let productSku = document.getElementById("update-sku-input").value;
+        let productQuantity = document.getElementById("update-quantity-input").value;
+        const data = await backend.updateProductQuantity(productSku, productQuantity);
+        if (data.err === null) {
+            alert("Product updated");
         } else {
-            searchFormRef.style.display = "none"; // Disable the search form
-            displayTable([{ "node": data.products[0] }]); // Create the table
-            tableContainerRef.style.display = "table";
+            alert("Product not found. No changes were made.");
         }
     });
 });

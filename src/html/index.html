@@ -14,7 +14,7 @@
         <div class="flexbox" id="left-pane">
             <h1>Products CRUD</h1>
             <button class="btn" id="getAll">View all products</button>
-            <button class="btn" id="lookupProduct">Find SKU</button>
+            <button class="btn" id="lookupProduct">Lookup SKU</button>
             <button class="btn" id="createNew">Create new product</button>
             <button class="btn" id="updateItem">Update product quantity</button>
             <button class="btn" id="deleteItem">Delete product</button>
@@ -50,23 +50,23 @@
             <div id="search-form-container">
                 <form id="search-form">
                     <label for="sku">SKU</label>
-                    <input type="string" name="sku" id="sku-input" placeholder="Enter SKU" required>
+                    <input type="string" name="sku" id="search-sku-input" placeholder="Enter SKU" required>
                     <button id="search-btn">Search</button>
                 </form>
             </div>
             <div id="update-form-container">
                 <form id="update-form">
                     <label for="sku">SKU</label>
-                    <input type="number" name="sku" id="sku" placeholder="Enter SKU" required>
+                    <input type="string" name="sku" id="update-sku-input" placeholder="Enter SKU" required>
                     <label for="quantity">Quantity</label>
-                    <input type="number" name="quantity" id="quantity" placeholder="Enter quantity" required>
+                    <input type="number" name="quantity" id="update-quantity-input" placeholder="Enter quantity" required>
                     <button id="update-btn">Update</button>
                 </form>
             </div>
             <div id="delete-form-container">
                 <form id="delete-form">
                     <label for="sku">SKU</label>
-                    <input type="number" name="sku" id="sku" placeholder="Enter SKU" required>
+                    <input type="string" name="sku" id="delete-sku-input" placeholder="Enter SKU" required>
                     <button id="delete-btn">Delete</button>
                 </form>
             </div>
