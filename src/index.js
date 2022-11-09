@@ -2,22 +2,60 @@ const { app, BrowserWindow, ipcMain } = require("electron");
 const productsCrud = require("products-crud");
 const config = require("./config.json");
 
+class CrudServices {
+    async getAllProducts(event, args) {
+        const data = await productsCrud.getAllProducts();
+        return data;
+    }
+    
+    async getProductBySku(event, sku) {
+        const data = await productsCrud.getProductBySku(sku);
+        return data
+    }
+
+    async createProduct(event, title, brand, summary, category, price, quantity, supplier) {
+        function generateSku() {
+            // Format: 12-345-6789
+            const randomNumber = () => Math.floor(Math.random() * 10); // Generates a number between 0 and 9 inclusive
+            let sku = `${randomNumber()}${randomNumber()}-${randomNumber()}${randomNumber()}${randomNumber()}-${randomNumber()}${randomNumber()}${randomNumber()}${randomNumber()}`;
+            return sku;
+        }
+        const sku = generateSku();
+        // const employeeId = config.employeeID
+        const employeeID = 1;
+        // Format for date is: 2022-01-01 00:00:00
+        const date = new Date();
+        const dateString = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+        // sku?: string, title?: string, brand?: string, summary?: string, price?: number, quantity?: number, category?: string, creator?: number, creation_date?: string, supplier?: string
+        let newProduct = new productsCrud.Product(sku, title, brand, summary, price, quantity, category, employeeID, dateString, supplier);
+        const data = await productsCrud.createProduct(newProduct);
+
+        return data;
+    }
+
+    async updateProductQuantity(event, sku, quantity) {
+        const data = await productsCrud.updateQuantity(sku, quantity);
+        return data;
+    }
+
+    async deleteProduct(event, sku) {
+        const data = await productsCrud.deleteProduct(sku);
+        return data;
+    }
+}
+
+crudServices = new CrudServices();
+
 // IPC Main Process Handlers
-ipcMain.handle("getAllProducts", async (event, args) => {
-    const data = await productsCrud.getAllProducts();
-    return data;
-});
+ipcMain.handle("getAllProducts", crudServices.getAllProducts);
 
-ipcMain.handle("getProductBySku", async (event, args) => {
-    const data = await productsCrud.getProductBySku(args);
-    return data;
-});
+ipcMain.handle("getProductBySku", crudServices.getProductBySku);
 
+ipcMain.handle("updateProductQuantity", crudServices.updateProductQuantity);
 
-ipcMain.handle("updateProductQuantity", async (event, sku, quantity) => {
-    const data = await productsCrud.updateQuantity(sku, quantity);
-    return data;
-});
+ipcMain.handle("deleteProduct", crudServices.deleteProduct);
+
+ipcMain.handle("createProduct", crudServices.createProduct);
 
 function createMainWindow() {
     const mainWindow = new BrowserWindow({
