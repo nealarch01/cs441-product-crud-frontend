@@ -25,7 +25,7 @@ function disableRightPaneViews() {
 
 getAllRef.addEventListener("click", async () => {
     disableRightPaneViews();
-    const allProducts = await backend.getAllProducts();
+    const allProducts = await backendAPI.getAllProducts();
     displayTable(allProducts.products);
     tableContainerRef.style.display = "table";
 });
@@ -34,7 +34,7 @@ searchFormRef.addEventListener("submit", async (event) => {
     event.preventDefault(); // Prevent the form from submitting
     let productSku = document.getElementById("search-sku-input").value;
     console.log(productSku);
-    const data = await backend.getProductBySku(productSku);
+    const data = await backendAPI.getProductBySku(productSku);
     if (data.products === null) {
         alert("Product not found");
     }
@@ -60,7 +60,7 @@ updateItemRef.addEventListener("click", async () => {
         event.preventDefault(); // Prevent the form from submitting
         let productSku = document.getElementById("update-sku-input").value;
         let productQuantity = document.getElementById("update-quantity-input").value;
-        const data = await backend.updateProductQuantity(productSku, productQuantity);
+        const data = await backendAPI.updateProductQuantity(productSku, productQuantity);
         if (data.err === null) {
             alert("Product updated");
         } else {

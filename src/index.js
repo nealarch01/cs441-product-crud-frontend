@@ -1,5 +1,23 @@
-const { app, BrowserWindow, ipc } = require("electron");
+const { app, BrowserWindow, ipcMain } = require("electron");
+const productsCrud = require("products-crud");
 const config = require("./config.json");
+
+// IPC Main Process Handlers
+ipcMain.handle("getAllProducts", async (event, args) => {
+    const data = await productsCrud.getAllProducts();
+    return data;
+});
+
+ipcMain.handle("getProductBySku", async (event, args) => {
+    const data = await productsCrud.getProductBySku(args);
+    return data;
+});
+
+
+ipcMain.handle("updateProductQuantity", async (event, sku, quantity) => {
+    const data = await productsCrud.updateQuantity(sku, quantity);
+    return data;
+});
 
 function createMainWindow() {
     const mainWindow = new BrowserWindow({

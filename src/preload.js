@@ -1,9 +1,9 @@
-const { contextBridge } = require("electron");
+const { contextBridge, ipcRenderer } = require("electron");
 const productsCrud = require("products-crud");
 
 
-contextBridge.exposeInMainWorld("backend", {
-    getAllProducts: async () => productsCrud.getAllProducts(),
-    getProductBySku: async (sku) => productsCrud.getProductBySku(sku),
-    updateProductQuantity: async (sku, quantity) => productsCrud.updateQuantity(sku, quantity),
-});
+contextBridge.exposeInMainWorld("backendAPI", {
+    getAllProducts: async () => ipcRenderer.invoke("getAllProducts"),
+    getProductBySku: async (sku) => ipcRenderer.invoke("getProductBySku", sku),
+    updateProductQuantity: async (sku, quantity) => ipcRenderer.invoke("updateProductQuantity", sku, quantity),
+})
