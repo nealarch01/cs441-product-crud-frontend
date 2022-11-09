@@ -1,6 +1,9 @@
 # cs441-products-crud
 CRUD API Stack: [TypeScript, GraphQL, PostGraphile, PostgreSQL]. Application stack: [JavaScript, Electron]
 
+### NOTE: products-crud api is linked locally via npm link
+### The repository for it is: https://github.com/nealarch01/cs441-product-crud-backend
+
 
 
 
